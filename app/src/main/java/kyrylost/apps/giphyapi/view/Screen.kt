@@ -1,4 +1,4 @@
-package kyrylost.apps.giphyapi
+package kyrylost.apps.giphyapi.view
 
 sealed class Screen(val route: String) {
     object GifsListScreen: Screen(route = "gifsListScreen")

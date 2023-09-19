@@ -1,8 +1,7 @@
-package kyrylost.apps.giphyapi
+package kyrylost.apps.giphyapi.view
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,7 +9,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -20,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,16 +26,19 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil.ImageLoader
 import coil.compose.AsyncImage
-import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import kotlinx.coroutines.launch
+import kyrylost.apps.giphyapi.viewmodel.AppViewModel
+import kyrylost.apps.giphyapi.R
 import kyrylost.apps.giphyapi.model.GifData
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun GifsListScreen(navController : NavController,
-                   viewModel : AppViewModel) {
+                   viewModel : AppViewModel
+) {
 
     val results = viewModel.getGifs().collectAsLazyPagingItems()
 
@@ -55,12 +56,52 @@ fun GifsListScreen(navController : NavController,
 
     val coroutineScope = rememberCoroutineScope()
 
+    @Composable
+    fun GifListItem(gifData: GifData, navController: NavController, ) {
+
+        val gifUrl = gifData.images.original.url
+
+        AsyncImage(
+            model = ImageRequest.Builder(context)
+                .data(gifUrl)
+                .crossfade(true)
+                .build(),
+            placeholder = painterResource(R.drawable.placeholder),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(36.dp))
+                .height(200.dp)
+                .clickable {
+                    itemClicked = true
+                    val encodedUrl = URLEncoder.encode(gifUrl, StandardCharsets.UTF_8.toString())
+                    navController.navigate(
+                        route = Screen.SingleGifScreen.passGifUrl(encodedUrl)
+                    )
+
+                    if (columnSelected) {
+                        viewModel.saveListScrollPosition(
+                            listState.firstVisibleItemIndex,
+                            listState.firstVisibleItemScrollOffset
+                        )
+                    } else {
+                        viewModel.saveGridScrollPosition(
+                            gridState.firstVisibleItemIndex,
+                            gridState.firstVisibleItemScrollOffset
+                        )
+                    }
+
+                }
+        )
+    }
+
     Column {
 
         @Composable
         fun onChangeToGrid() {
             LazyVerticalGrid (
-                modifier = Modifier.background(colorResource(R.color.black)),
                 columns = GridCells.Fixed(2),
                 state = gridState
             ) {
@@ -181,7 +222,6 @@ fun GifsListScreen(navController : NavController,
         @Composable
         fun onChangeToColumn() {
             LazyColumn(
-                modifier = Modifier.background(colorResource(R.color.black)),
                 state = listState
             ) {
 
@@ -300,13 +340,12 @@ fun GifsListScreen(navController : NavController,
         Column (modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .background(colorResource(R.color.black))
         ){
             Text(
                 text = "Popular now",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White,
+                color = Color.Black,
                 modifier = Modifier.padding(top = 40.dp, bottom = 20.dp, start = 8.dp)
             )
         }
@@ -315,25 +354,4 @@ fun GifsListScreen(navController : NavController,
         else onChangeToGrid()
 
     }
-}
-
-@Composable
-fun GifListItem(gifData: GifData, navController: NavController) {
-    val context = LocalContext.current
-    val imageLoader = ImageLoader.Builder(context)
-        .components {
-            add(ImageDecoderDecoder.Factory())
-        }
-        .build()
-
-    AsyncImage(
-        model = ImageRequest.Builder(context)
-            .data(gifData.images.original.url)
-            .crossfade(true)
-            .build(),
-        contentDescription = null,
-        contentScale = ContentScale.Crop,
-        modifier = Modifier.clip(CircleShape),
-        imageLoader = imageLoader
-    )
 }

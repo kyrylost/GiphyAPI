@@ -1,4 +1,4 @@
-package kyrylost.apps.giphyapi
+package kyrylost.apps.giphyapi.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

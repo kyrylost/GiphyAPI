@@ -1,8 +1,7 @@
-package kyrylost.apps.giphyapi
+package kyrylost.apps.giphyapi.api
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import kyrylost.apps.giphyapi.api.ApiService
 import kyrylost.apps.giphyapi.model.GifData
 
 class GifsPagingSource(private val apiService: ApiService)
@@ -17,7 +16,7 @@ class GifsPagingSource(private val apiService: ApiService)
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GifData> {
         return try {
             val page = params.key ?: 1
-            val response = apiService.getGifs(page = page)
+            val response = apiService.getGifs(offset = page * 20) // 20 is amount of items per response
 
             LoadResult.Page(
                 data = response.data,

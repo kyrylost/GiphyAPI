@@ -1,10 +1,10 @@
 <vector android:autoMirrored="true" android:height="128dp"
     android:viewportHeight="128" android:viewportWidth="128"
     android:width="128dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="#FFF" android:pathData="M30,0L50,0A6,6 0,0 1,56 6L56,26A6,6 0,0 1,50 32L30,32A6,6 0,0 1,24 26L24,6A6,6 0,0 1,30 0z"/>
-    <path android:fillColor="#FFF" android:pathData="M30,48L50,48A6,6 0,0 1,56 54L56,74A6,6 0,0 1,50 80L30,80A6,6 0,0 1,24 74L24,54A6,6 0,0 1,30 48z"/>
-    <path android:fillColor="#FFF" android:pathData="M30,96L50,96A6,6 0,0 1,56 102L56,122A6,6 0,0 1,50 128L30,128A6,6 0,0 1,24 122L24,102A6,6 0,0 1,30 96z"/>
-    <path android:fillColor="#FFF" android:pathData="M78,0L98,0A6,6 0,0 1,104 6L104,26A6,6 0,0 1,98 32L78,32A6,6 0,0 1,72 26L72,6A6,6 0,0 1,78 0z"/>
-    <path android:fillColor="#FFF" android:pathData="M78,48L98,48A6,6 0,0 1,104 54L104,74A6,6 0,0 1,98 80L78,80A6,6 0,0 1,72 74L72,54A6,6 0,0 1,78 48z"/>
-    <path android:fillColor="#FFF" android:pathData="M78,96L98,96A6,6 0,0 1,104 102L104,122A6,6 0,0 1,98 128L78,128A6,6 0,0 1,72 122L72,102A6,6 0,0 1,78 96z"/>
+    <path android:fillColor="#000" android:pathData="M30,0L50,0A6,6 0,0 1,56 6L56,26A6,6 0,0 1,50 32L30,32A6,6 0,0 1,24 26L24,6A6,6 0,0 1,30 0z"/>
+    <path android:fillColor="#000" android:pathData="M30,48L50,48A6,6 0,0 1,56 54L56,74A6,6 0,0 1,50 80L30,80A6,6 0,0 1,24 74L24,54A6,6 0,0 1,30 48z"/>
+    <path android:fillColor="#000" android:pathData="M30,96L50,96A6,6 0,0 1,56 102L56,122A6,6 0,0 1,50 128L30,128A6,6 0,0 1,24 122L24,102A6,6 0,0 1,30 96z"/>
+    <path android:fillColor="#000" android:pathData="M78,0L98,0A6,6 0,0 1,104 6L104,26A6,6 0,0 1,98 32L78,32A6,6 0,0 1,72 26L72,6A6,6 0,0 1,78 0z"/>
+    <path android:fillColor="#000" android:pathData="M78,48L98,48A6,6 0,0 1,104 54L104,74A6,6 0,0 1,98 80L78,80A6,6 0,0 1,72 74L72,54A6,6 0,0 1,78 48z"/>
+    <path android:fillColor="#000" android:pathData="M78,96L98,96A6,6 0,0 1,104 102L104,122A6,6 0,0 1,98 128L78,128A6,6 0,0 1,72 122L72,102A6,6 0,0 1,78 96z"/>
 </vector>

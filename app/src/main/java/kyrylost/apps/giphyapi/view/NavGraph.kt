@@ -1,4 +1,4 @@
-package kyrylost.apps.giphyapi
+package kyrylost.apps.giphyapi.view
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -8,7 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import kyrylost.apps.giphyapi.Screen
+import kyrylost.apps.giphyapi.viewmodel.AppViewModel
 
 @Composable
 fun SetupNavGraph(
@@ -34,7 +34,7 @@ fun SetupNavGraph(
         ) {
             val gifUrl = it.arguments?.getString("gifUrl") ?: ""
 
-            SingleGifScreen(viewModel = viewModel, gifUrl = gifUrl)
+            SingleGifScreen(gifUrl = gifUrl)
         }
     }
 }
