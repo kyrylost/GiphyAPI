@@ -26,7 +26,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import coil.ImageLoader
 import coil.compose.AsyncImage
+import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import kotlinx.coroutines.launch
 import kyrylost.apps.giphyapi.viewmodel.AppViewModel
@@ -55,6 +57,14 @@ fun GifsListScreen(navController : NavController,
     val listState = rememberLazyListState()
 
     val coroutineScope = rememberCoroutineScope()
+
+    val imageLoader = remember {
+        ImageLoader.Builder(context)
+            .components {
+                add(ImageDecoderDecoder.Factory())
+            }
+            .build()
+    }
 
     @Composable
     fun GifListItem(gifData: GifData, navController: NavController, ) {
@@ -93,7 +103,8 @@ fun GifsListScreen(navController : NavController,
                         )
                     }
 
-                }
+                },
+            imageLoader = imageLoader
         )
     }
 
