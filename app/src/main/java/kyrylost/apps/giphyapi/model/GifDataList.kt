@@ -9,13 +9,14 @@ data class GifDataList(
     val meta: Meta,
     val pagination: Pagination
 ) {
+    @Keep
     data class Meta(
         val msg: String,
         @SerializedName("response_id")
         val responseId: String,
         val status: Int
     )
-
+    @Keep
     data class Pagination(
         val count: Int,
         val offset: Int,

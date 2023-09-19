@@ -1,7 +1,9 @@
 package kyrylost.apps.giphyapi.model
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class GifData(
     val analytics: Analytics,
     @SerializedName("analytics_response_payload")
@@ -35,24 +37,26 @@ data class GifData(
     val user: User,
     val username: String
 ) {
+    @Keep
     data class Analytics(
         val onclick: Onclick,
         val onload: Onload,
         val onsent: Onsent
     ) {
+        @Keep
         data class Onclick(
             val url: String
         )
-
+        @Keep
         data class Onload(
             val url: String
         )
-
+        @Keep
         data class Onsent(
             val url: String
         )
     }
-
+    @Keep
     data class Images(
         @SerializedName("fixed_height")
         val fixedHeight: FixedHeight,
@@ -68,6 +72,7 @@ data class GifData(
         val fixedWidthSmall: FixedWidthSmall,
         val original: Original
     ) {
+        @Keep
         data class FixedHeight(
             val height: String,
             val mp4: String,
@@ -80,7 +85,7 @@ data class GifData(
             val webpSize: String,
             val width: String
         )
-
+        @Keep
         data class FixedHeightDownsampled(
             val height: String,
             val size: String,
@@ -90,7 +95,7 @@ data class GifData(
             val webpSize: String,
             val width: String
         )
-
+        @Keep
         data class FixedHeightSmall(
             val height: String,
             val mp4: String,
@@ -103,7 +108,7 @@ data class GifData(
             val webpSize: String,
             val width: String
         )
-
+        @Keep
         data class FixedWidth(
             val height: String,
             val mp4: String,
@@ -116,7 +121,7 @@ data class GifData(
             val webpSize: String,
             val width: String
         )
-
+        @Keep
         data class FixedWidthDownsampled(
             val height: String,
             val size: String,
@@ -126,7 +131,7 @@ data class GifData(
             val webpSize: String,
             val width: String
         )
-
+        @Keep
         data class FixedWidthSmall(
             val height: String,
             val mp4: String,
@@ -139,7 +144,7 @@ data class GifData(
             val webpSize: String,
             val width: String
         )
-
+        @Keep
         data class Original(
             val frames: String,
             val hash: String,
@@ -155,7 +160,7 @@ data class GifData(
             val width: String
         )
     }
-
+    @Keep
     data class User(
         @SerializedName("avatar_url")
         val avatarUrl: String,
