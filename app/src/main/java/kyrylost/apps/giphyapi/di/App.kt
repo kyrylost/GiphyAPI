@@ -1,4 +1,4 @@
-package kyrylost.apps.giphyapi
+package kyrylost.apps.giphyapi.di
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

@@ -12,16 +12,11 @@ import kyrylost.apps.giphyapi.ui.theme.GiphyAPITheme
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: AppViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             GiphyAPITheme {
-                val navController = rememberNavController()
-                SetupNavGraph(
-                    navController = navController,
-                    viewModel
-                )
+                MainScreen()
             }
         }
     }

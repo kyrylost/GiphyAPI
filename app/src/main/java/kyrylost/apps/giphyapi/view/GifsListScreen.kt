@@ -1,5 +1,6 @@
 package kyrylost.apps.giphyapi.view
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -17,35 +18,43 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.ImageLoader
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import kotlinx.coroutines.launch
 import kyrylost.apps.giphyapi.viewmodel.AppViewModel
 import kyrylost.apps.giphyapi.R
 import kyrylost.apps.giphyapi.model.GifData
+import kyrylost.apps.giphyapi.viewmodel.GifsListScreenViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Composable
-fun GifsListScreen(navController : NavController,
-                   viewModel : AppViewModel
+fun GifsListScreen(
+    viewModel : GifsListScreenViewModel = hiltViewModel()
 ) {
 
+    Log.d("GifsListScreenLaunched", "Launched")
     val results = viewModel.getGifs().collectAsLazyPagingItems()
+    val viewState = viewModel.viewState.collectAsState().value
 
     var columnSelected by remember {
-        mutableStateOf(viewModel.isColumnSelected)
+        mutableStateOf(viewState.isColumnSelected)
     }
     var itemClicked by remember {
         mutableStateOf(false)
@@ -67,10 +76,8 @@ fun GifsListScreen(navController : NavController,
     }
 
     @Composable
-    fun GifListItem(gifData: GifData, navController: NavController, ) {
-
+    fun GifListItem(gifData: GifData) {
         val gifUrl = gifData.images.original.url
-
         AsyncImage(
             model = ImageRequest.Builder(context)
                 .data(gifUrl)
@@ -87,9 +94,7 @@ fun GifsListScreen(navController : NavController,
                 .clickable {
                     itemClicked = true
                     val encodedUrl = URLEncoder.encode(gifUrl, StandardCharsets.UTF_8.toString())
-                    navController.navigate(
-                        route = Screen.SingleGifScreen.passGifUrl(encodedUrl)
-                    )
+                    viewModel.onGifClicked(encodedUrl)
 
                     if (columnSelected) {
                         viewModel.saveListScrollPosition(
@@ -117,9 +122,9 @@ fun GifsListScreen(navController : NavController,
                 state = gridState
             ) {
 
-                if(gridState.firstVisibleItemIndex < viewModel.gridIndex) {
+                if(gridState.firstVisibleItemIndex < viewState.gridIndex) {
                     coroutineScope.launch {
-                        gridState.animateScrollToItem(viewModel.gridIndex, viewModel.gridOffset)
+                        gridState.animateScrollToItem(viewState.gridIndex, viewState.gridOffset)
                     }
                 }
                 else if (!itemClicked){
@@ -129,7 +134,7 @@ fun GifsListScreen(navController : NavController,
                 item {
                     Row (modifier = Modifier.padding(bottom = 40.dp, top = 20.dp)) {
                         Image(
-                            painterResource(id = R.drawable.grid_icon),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.grid_icon),
                             contentDescription = "Grid",
                             modifier = Modifier
                                 .clickable {
@@ -140,7 +145,7 @@ fun GifsListScreen(navController : NavController,
                                 .padding(start = 8.dp, end = 8.dp)
                         )
                         Image(
-                            painterResource(id = R.drawable.column_icon),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.column_icon),
                             contentDescription = "Column",
                             modifier = Modifier
                                 .clickable {
@@ -156,7 +161,7 @@ fun GifsListScreen(navController : NavController,
 
                 items(results.itemCount) { index ->
                     val gifData = results[index]
-                    GifListItem(gifData = gifData!!, navController)
+                    GifListItem(gifData = gifData!!)
                 }
 
                 when (val state = results.loadState.refresh) { //FIRST LOAD
@@ -236,9 +241,9 @@ fun GifsListScreen(navController : NavController,
                 state = listState
             ) {
 
-                if(listState.firstVisibleItemIndex < viewModel.listIndex) {
+                if(listState.firstVisibleItemIndex < viewState.listIndex) {
                     coroutineScope.launch {
-                        listState.animateScrollToItem(viewModel.listIndex, viewModel.listOffset)
+                        listState.animateScrollToItem(viewState.listIndex, viewState.listOffset)
                     }
                 }
                 else if (!itemClicked){
@@ -274,7 +279,7 @@ fun GifsListScreen(navController : NavController,
 
                 items(count = results.itemCount) { index ->
                     val item = results[index]
-                    GifListItem(gifData = item!!, navController)
+                    GifListItem(gifData = item!!)
                 }
 
                 when (val state = results.loadState.refresh) { //FIRST LOAD
